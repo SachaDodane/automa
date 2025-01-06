@@ -8,8 +8,8 @@ Simple API using Slim v4 MySQL and optionnaly S3 Storage
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/SachaDodane/automatisation.git
-cd automatisation
+git clone https://github.com/SachaDodane/automa
+cd automa
 ```
 
 2. Create `.env` file:
