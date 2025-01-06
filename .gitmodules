@@ -1,0 +1,3 @@
+[submodule "immo-api-php"]
+    path = immo-api-php
+    url = https://gitlab.univ-lorraine.fr/p00754/immo-api-php.git
