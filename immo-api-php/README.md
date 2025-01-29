@@ -1,65 +1,142 @@
-# Slim 4 API
+# API Immobilier (immo-api-php)
 
-Simple API using Slim v4 MySQL and optionnaly S3 Storage
+API REST développée avec Slim 4 pour la gestion immobilière, incluant une base de données MySQL et un stockage S3 optionnel.
+
+## Description
+
+Cette API fait partie d'un ensemble de trois projets :
+- API Backend (PHP/Slim 4) - Ce projet
+- Interface d'administration (React)
+- Interface client (Vue.js)
+
+## Technologies Utilisées
+
+- PHP 8.x
+- Slim Framework 4
+- MySQL 8.0
+- Docker & Docker Compose
+- JWT pour l'authentification
+- AWS S3 / MinIO pour le stockage des images
 
 ## Installation
 
-### Using Docker (Recommended)
+### Avec Docker (Recommandé)
 
-1. Clone the repository:
+1. Cloner le dépôt :
 ```bash
-git clone https://github.com/SachaDodane/automatisation.git
-cd automatisation
+git clone https://github.com/SachaDodane/automa.git
+cd automa
 ```
 
-2. Create `.env` file:
+2. Créer le fichier `.env` :
 ```bash
-cp immo-api-php/.env.example immo-api-php/.env
+cp immo-api-php/.env.exemple immo-api-php/.env
 ```
 
-3. Build and start the Docker containers:
+3. Configurer les variables d'environnement dans le fichier `.env`
+
+4. Lancer les conteneurs Docker :
 ```bash
 docker-compose up -d
 ```
 
-The API will be available at `http://localhost:8080`
+L'API sera disponible sur `http://localhost:8080`
 
-### Manual Installation
+### Installation Manuelle
 
-1. Create `.env` from `.env.exemple`
-2. Update environment variables
-3. Run `php -S localhost:<PORT> -t ./public`
+1. Copier `.env.exemple` vers `.env`
+2. Configurer les variables d'environnement
+3. Installer les dépendances : `composer install`
+4. Lancer le serveur : `php -S localhost:<PORT> -t ./public`
 
-## Environment Variables
+## Variables d'Environnement
 
-The following environment variables need to be set in your `.env` file:
+Configuration requise dans le fichier `.env` :
 
-- `DB_HOST`: Database host (default: "db" for Docker)
-- `DB_USER`: Database user (default: "root")
-- `DB_PASSWORD`: Database password (default: "root")
-- `DB_NAME`: Database name (default: "immo_db")
+### Base de données MySQL
+- `MYSQL_HOST` : Hôte de la base de données (par défaut : "db" pour Docker)
+- `MYSQL_DATABASE` : Nom de la base de données
+- `MYSQL_USER` : Utilisateur MySQL
+- `MYSQL_PASSWORD` : Mot de passe MySQL
 
-## API Documentation
+### Stockage S3 (Optionnel)
+- `S3_ENDPOINT` : URL du endpoint S3 ou MinIO
+- `S3_ACCESS_KEY` : Clé d'accès S3
+- `S3_SECRET_KEY` : Clé secrète S3
+- `S3_BUCKET` : Nom du bucket S3
 
-[Documentation to be added]
+## Structure du Projet
 
-## Contributing
-
-1. Create a new feature branch from `develop`:
-```bash
-git checkout -b feature/your-feature-name
+```
+immo-api-php/
+├── src/
+│   ├── Controllers/    # Contrôleurs de l'application
+│   ├── Middlewares/    # Middlewares (CORS, Auth, etc.)
+│   ├── Models/         # Modèles de données
+│   ├── Routes/         # Définition des routes
+│   ├── Utils/          # Classes utilitaires
+│   └── config/         # Configuration
+├── public/            # Point d'entrée de l'application
+└── vendor/           # Dépendances
 ```
 
-2. Make your changes and commit them:
-```bash
-git commit -m "feat: your feature description"
+## GitFlow
+
+Le projet suit la méthodologie GitFlow :
+
+- `main` : Branche de production
+- `develop` : Branche de développement
+- `feature/*` : Branches de fonctionnalités
+- `hotfix/*` : Branches de corrections urgentes
+
+### Processus de développement :
+1. Créer une branche feature : `git checkout -b feature/ma-fonctionnalite`
+2. Développer la fonctionnalité
+3. Créer une Pull Request vers `develop`
+4. Après review, merger dans `develop`
+
+## Fonctionnalités
+
+- Authentification JWT
+- CRUD pour les biens immobiliers
+- Upload d'images (avec support S3/MinIO)
+- Pagination des résultats
+- Validation des données
+- CORS configuré
+
+## Configuration MinIO (Bonus)
+
+Pour activer le stockage d'images avec MinIO :
+
+1. Ajouter le service MinIO dans `docker-compose.yml` :
+```yaml
+minio:
+  image: minio/minio
+  ports:
+    - "9000:9000"
+    - "9001:9001"
+  environment:
+    MINIO_ROOT_USER: minioadmin
+    MINIO_ROOT_PASSWORD: minioadmin
+  command: server /data --console-address ":9001"
 ```
 
-3. Push your changes and create a pull request:
-```bash
-git push origin feature/your-feature-name
+2. Configurer les variables S3 dans `.env` :
+```
+S3_ENDPOINT=http://minio:9000
+S3_ACCESS_KEY=minioadmin
+S3_SECRET_KEY=minioadmin
+S3_BUCKET=images
 ```
 
-## License
+## Contribution
 
-[License information to be added]
+1. Fork le projet
+2. Créer une branche feature
+3. Commit les changements
+4. Pousser la branche
+5. Créer une Pull Request
+
+## Licence
+
+MIT
